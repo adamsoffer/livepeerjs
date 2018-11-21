@@ -46,6 +46,7 @@ const TranscodersView: React.ComponentType<TranscodersViewProps> = ({
     tokenBalance,
   } = me.data
   const totalStake = MathBN.max(bondedAmount, pendingStake)
+  console.log(status)
   const isBonded = status === 'Bonded'
   const isUnbonding = status === 'Unbonding'
   const isTranscoder = me.data.transcoder.status === 'Registered'

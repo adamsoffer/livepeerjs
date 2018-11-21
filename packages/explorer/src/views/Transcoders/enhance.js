@@ -1,9 +1,9 @@
 import React from 'react'
-import { compose, mapProps, withHandlers } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { connectCurrentRoundQuery, connectToasts } from '../../enhancers'
-import { MathBN, sleep } from '../../utils'
+import { MathBN } from '../../utils'
 import { mockAccount } from '@livepeer/graphql-sdk'
 
 const MeDelegatorTranscoderQuery = gql`
@@ -85,8 +85,8 @@ const TranscodersQuery = gql`
     totalStake
   }
 
-  query TranscodersQuery($skip: Int, $limit: Int) {
-    transcoders(skip: $skip, limit: $limit) {
+  query TranscodersQuery {
+    transcoders {
       ...TranscoderFragment
     }
   }
@@ -94,7 +94,12 @@ const TranscodersQuery = gql`
 
 const connectTranscodersQuery = graphql(TranscodersQuery, {
   props: ({ data, ownProps }) => {
-    const { transcoders, ...queryData } = data
+    let { transcoders, ...queryData } = data
+    // Filter by registered transcoders
+    // TODO: Use graphql variables instead when The Graph supports them
+    if (transcoders) {
+      transcoders = transcoders.filter(t => t.status === 'Registered')
+    }
     return {
       ...ownProps,
       transcoders: {

@@ -195,6 +195,7 @@ const trackingId = process.env.REACT_APP_GA_TRACKING_ID
   }
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+  await enableAccounts()
   // bootstrap the apollo client
   const client = await createApolloClient(async () => {
     const opts = {
@@ -218,7 +219,6 @@ const trackingId = process.env.REACT_APP_GA_TRACKING_ID
     // because at the moment the Mist provided web3 object does not have additional properties like `version`
     // As a result, if a web3 object with the `version` property is not available, we fallback
     // to using a default provider which should be the case when using Mist
-    await enableAccounts()
     const { version } = window.web3
     const controllers = {
       1: process.env.REACT_APP_MAINNET_CONTROLLER_ADDRESS,

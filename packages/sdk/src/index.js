@@ -670,6 +670,7 @@ export async function createLivepeerSDK(
      * }
      */
     async getBlock(id: string): Promise<Block> {
+      console.log(id)
       const block = id.toString().startsWith('0x')
         ? await config.eth.getBlockByHash(id, true)
         : await config.eth.getBlockByNumber(id, true)

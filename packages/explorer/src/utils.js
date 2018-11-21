@@ -47,6 +47,7 @@ export const MathBN = {
   div: (a: string | BN, b: string | BN): string => {
     const aBN = new Big(a || '0')
     const bBN = new Big(b || '0')
+    if (bBN.eq(0)) return 0
     return aBN.div(bBN).toString(10)
   },
   min: (a: string | BN, b: string | BN): string => {

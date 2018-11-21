@@ -243,9 +243,11 @@ export default async function createApolloClient(
             graphql(schema, print(query), null, ctx, variables, operationName)
               .then(value => {
                 observer.next(value)
+                console.log(value)
                 observer.complete(value)
               })
               .catch(e => {
+                console.log('HERE')
                 console.error(e)
                 observer.error(e)
               })
