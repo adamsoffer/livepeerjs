@@ -231,8 +231,12 @@ export default async function createApolloClient(
             )
               .then(async sub => {
                 while (true) {
-                  const { value } = await sub.next()
-                  observer.next(value)
+                  try {
+                    const { value } = await sub.next()
+                    observer.next(value)
+                  } catch (err) {
+                    console.warn(err)
+                  }
                 }
               })
               .catch(e => {
@@ -242,8 +246,12 @@ export default async function createApolloClient(
           } else {
             graphql(schema, print(query), null, ctx, variables, operationName)
               .then(value => {
-                observer.next(value)
-                observer.complete(value)
+                try {
+                  observer.next(value)
+                  observer.complete(value)
+                } catch (err) {
+                  console.warn(err)
+                }
               })
               .catch(e => {
                 console.error(e)
