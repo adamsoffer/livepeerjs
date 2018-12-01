@@ -11,14 +11,17 @@ const LockedWalletAlert = () => {
       }}
     >
       <p style={{ margin: '0', color: 'white' }}>
-        limited or no connectivity to web3. Please unlock&nbsp;
+        {window.ethereum
+          ? `limited or no connectivity to web3. Please unlock `
+          : `Non-Etrhereum browser detected. You should consider trying `}
         <a
           href="https://metamask.io/?utm_source=livepeer.org&utm_medium=referral"
           style={{ color: 'inherit' }}
         >
           Metamask
         </a>
-        &nbsp;or another web3 enabled wallet.
+        &nbsp;or another web3 enabled wallet to enable full features of LPT
+        explorer.
       </p>
     </div>
   )
