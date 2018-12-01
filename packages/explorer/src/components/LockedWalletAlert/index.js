@@ -20,7 +20,7 @@ const LockedWalletAlert = () => {
         >
           Metamask
         </a>
-        &nbsp;or another web3 enabled wallet to enable full features of LPT
+        &nbsp;or another web3 enabled wallet to enable full features in Livepeer
         explorer.
       </p>
     </div>

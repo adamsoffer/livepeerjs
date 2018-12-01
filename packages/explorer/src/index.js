@@ -146,8 +146,8 @@ const trackingId = process.env.REACT_APP_GA_TRACKING_ID
       try {
         window.ethereum.enable()
       } catch (e) {
+        limitedMode()
         console.log('METAMASK | Access to accounts denied')
-        renderLockedWarning()
       }
     } else if (window.web3 && window.web3.version) {
       // this is the old way, accounts are always exposed.
@@ -165,35 +165,11 @@ const trackingId = process.env.REACT_APP_GA_TRACKING_ID
     window.web3 = new window.Web3(window.ethereum)
   }
 
-  const renderLockedWarning = () => {
-    render(
-      <BasicModal title={'Metamask is Locked'}>
-        <p>
-          Not connected to web3. Please enable Metamask or another web3 enabled
-          browser to be able to use full features in Livepeer Explorer
-        </p>
-        <Button className={'primary'} onClick={enableAccounts}>
-          Enable
-        </Button>
-        <Button className={'primary'} onClick={limitedMode}>
-          Limited mode
-        </Button>
-      </BasicModal>,
-      document.getElementById('main-root'),
-    )
-  }
-
-  const renderNonDappBrowserWarning = () => {
-    render(
-      <BasicModal title={'Non-Dapp Browser'}>
-        <p>
-          Non-Ethereum browser detected. Livepeer requires Metamask or a dapp
-          browser like Mist
-        </p>
-      </BasicModal>,
-      document.getElementById('main-root'),
-    )
-  }
+  /**
+   * Try and get the user to link their account with the explorer
+   * for web3 to be injected.
+   */
+  await enableAccounts()
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
   // bootstrap the apollo client
@@ -213,12 +189,6 @@ const trackingId = process.env.REACT_APP_GA_TRACKING_ID
         if (onMyAccountPage && accountChanged) window.location = '/me'
       },
     }
-
-    /**
-     * Try and get the user to link their account with the explorer
-     * for web3 to be injected.
-     */
-    await enableAccounts()
 
     // The address of the deployed Controller contract
     // Test if web3 is injected
