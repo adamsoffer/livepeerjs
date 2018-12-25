@@ -11,8 +11,8 @@ import {
 
 export class Transcoder extends Entity {
   constructor(id: string) {
+    this.entries = new Array(0);
     this.set("id", Value.fromString(id));
-    return this;
   }
 
   save(): void {
@@ -32,36 +32,20 @@ export class Transcoder extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString() as string;
-    }
+    return value.toString();
   }
 
   set id(value: string) {
-    if (value === null) {
-      this.unset("id");
-    } else {
-      this.set("id", Value.fromString(value as string));
-    }
+    this.set("id", Value.fromString(value));
   }
 
-  get active(): boolean | null {
+  get active(): boolean {
     let value = this.get("active");
-    if (value === null) {
-      return false;
-    } else {
-      return value.toBoolean() as boolean | null;
-    }
+    return value.toBoolean();
   }
 
-  set active(value: boolean | null) {
-    if (value === null) {
-      this.unset("active");
-    } else {
-      this.set("active", Value.fromBoolean(value as boolean));
-    }
+  set active(value: boolean) {
+    this.set("active", Value.fromBoolean(value));
   }
 
   get ensName(): string | null {
@@ -69,7 +53,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toString() as string | null;
+      return value.toString();
     }
   }
 
@@ -86,7 +70,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toString() as string | null;
+      return value.toString();
     }
   }
 
@@ -103,7 +87,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -120,7 +104,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -137,7 +121,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -154,7 +138,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -171,7 +155,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -188,7 +172,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -205,7 +189,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -222,7 +206,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -239,7 +223,7 @@ export class Transcoder extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toStringArray() as Array<string> | null;
+      return value.toStringArray();
     }
   }
 
@@ -250,12 +234,29 @@ export class Transcoder extends Entity {
       this.set("rewards", Value.fromStringArray(value as Array<string>));
     }
   }
+
+  get delegators(): Array<string> | null {
+    let value = this.get("delegators");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set delegators(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("delegators");
+    } else {
+      this.set("delegators", Value.fromStringArray(value as Array<string>));
+    }
+  }
 }
 
 export class Reward extends Entity {
   constructor(id: string) {
+    this.entries = new Array(0);
     this.set("id", Value.fromString(id));
-    return this;
   }
 
   save(): void {
@@ -275,19 +276,11 @@ export class Reward extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString() as string;
-    }
+    return value.toString();
   }
 
   set id(value: string) {
-    if (value === null) {
-      this.unset("id");
-    } else {
-      this.set("id", Value.fromString(value as string));
-    }
+    this.set("id", Value.fromString(value));
   }
 
   get round(): string | null {
@@ -295,7 +288,7 @@ export class Reward extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toString() as string | null;
+      return value.toString();
     }
   }
 
@@ -312,7 +305,7 @@ export class Reward extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toString() as string | null;
+      return value.toString();
     }
   }
 
@@ -329,7 +322,7 @@ export class Reward extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -344,8 +337,8 @@ export class Reward extends Entity {
 
 export class Round extends Entity {
   constructor(id: string) {
+    this.entries = new Array(0);
     this.set("id", Value.fromString(id));
-    return this;
   }
 
   save(): void {
@@ -365,36 +358,20 @@ export class Round extends Entity {
 
   get id(): string {
     let value = this.get("id");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString() as string;
-    }
+    return value.toString();
   }
 
   set id(value: string) {
-    if (value === null) {
-      this.unset("id");
-    } else {
-      this.set("id", Value.fromString(value as string));
-    }
+    this.set("id", Value.fromString(value));
   }
 
-  get initialized(): boolean | null {
+  get initialized(): boolean {
     let value = this.get("initialized");
-    if (value === null) {
-      return false;
-    } else {
-      return value.toBoolean() as boolean | null;
-    }
+    return value.toBoolean();
   }
 
-  set initialized(value: boolean | null) {
-    if (value === null) {
-      this.unset("initialized");
-    } else {
-      this.set("initialized", Value.fromBoolean(value as boolean));
-    }
+  set initialized(value: boolean) {
+    this.set("initialized", Value.fromBoolean(value));
   }
 
   get length(): BigInt | null {
@@ -402,7 +379,7 @@ export class Round extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -419,7 +396,7 @@ export class Round extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -436,7 +413,7 @@ export class Round extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt() as BigInt | null;
+      return value.toBigInt();
     }
   }
 
@@ -453,7 +430,7 @@ export class Round extends Entity {
     if (value === null) {
       return null;
     } else {
-      return value.toStringArray() as Array<string> | null;
+      return value.toStringArray();
     }
   }
 
@@ -462,6 +439,258 @@ export class Round extends Entity {
       this.unset("rewards");
     } else {
       this.set("rewards", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class Delegator extends Entity {
+  constructor(id: string) {
+    this.entries = new Array(0);
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Delegator entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Delegator entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Delegator", id.toString(), this);
+  }
+
+  static load(id: string): Delegator | null {
+    return store.get("Delegator", id) as Delegator | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get allowance(): BigInt | null {
+    let value = this.get("allowance");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set allowance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("allowance");
+    } else {
+      this.set("allowance", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get bondedAmount(): BigInt | null {
+    let value = this.get("bondedAmount");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set bondedAmount(value: BigInt | null) {
+    if (value === null) {
+      this.unset("bondedAmount");
+    } else {
+      this.set("bondedAmount", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get fees(): BigInt | null {
+    let value = this.get("fees");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set fees(value: BigInt | null) {
+    if (value === null) {
+      this.unset("fees");
+    } else {
+      this.set("fees", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get delegateAddress(): string | null {
+    let value = this.get("delegateAddress");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegateAddress(value: string | null) {
+    if (value === null) {
+      this.unset("delegateAddress");
+    } else {
+      this.set("delegateAddress", Value.fromString(value as string));
+    }
+  }
+
+  get delegatedAmount(): BigInt | null {
+    let value = this.get("delegatedAmount");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set delegatedAmount(value: BigInt | null) {
+    if (value === null) {
+      this.unset("delegatedAmount");
+    } else {
+      this.set("delegatedAmount", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get lastClaimRound(): BigInt | null {
+    let value = this.get("lastClaimRound");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set lastClaimRound(value: BigInt | null) {
+    if (value === null) {
+      this.unset("lastClaimRound");
+    } else {
+      this.set("lastClaimRound", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get pendingFees(): BigInt | null {
+    let value = this.get("pendingFees");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set pendingFees(value: BigInt | null) {
+    if (value === null) {
+      this.unset("pendingFees");
+    } else {
+      this.set("pendingFees", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get pendingStake(): BigInt | null {
+    let value = this.get("pendingStake");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set pendingStake(value: BigInt | null) {
+    if (value === null) {
+      this.unset("pendingStake");
+    } else {
+      this.set("pendingStake", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get startRound(): BigInt | null {
+    let value = this.get("startRound");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set startRound(value: BigInt | null) {
+    if (value === null) {
+      this.unset("startRound");
+    } else {
+      this.set("startRound", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get status(): string | null {
+    let value = this.get("status");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set status(value: string | null) {
+    if (value === null) {
+      this.unset("status");
+    } else {
+      this.set("status", Value.fromString(value as string));
+    }
+  }
+
+  get withdrawAmount(): BigInt | null {
+    let value = this.get("withdrawAmount");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set withdrawAmount(value: BigInt | null) {
+    if (value === null) {
+      this.unset("withdrawAmount");
+    } else {
+      this.set("withdrawAmount", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get withdrawRound(): BigInt | null {
+    let value = this.get("withdrawRound");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set withdrawRound(value: BigInt | null) {
+    if (value === null) {
+      this.unset("withdrawRound");
+    } else {
+      this.set("withdrawRound", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get nextUnbondingLockId(): BigInt | null {
+    let value = this.get("nextUnbondingLockId");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set nextUnbondingLockId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("nextUnbondingLockId");
+    } else {
+      this.set("nextUnbondingLockId", Value.fromBigInt(value as BigInt));
     }
   }
 }

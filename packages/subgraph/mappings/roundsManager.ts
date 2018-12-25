@@ -19,10 +19,7 @@ export function newRound(event: NewRound): void {
     "0000000000000000000000000000000000000000"
   );
   let currentTranscoder = bondingManager.getFirstTranscoderInPool();
-  let transcoder = store.get(
-    "Transcoder",
-    currentTranscoder.toHex()
-  ) as Transcoder;
+  let transcoder = new Transcoder(currentTranscoder.toHex());
   let active: boolean;
   let rewardId: string;
   let reward: Reward;
@@ -32,7 +29,7 @@ export function newRound(event: NewRound): void {
     // Update transcoder active state
     active = bondingManager.isActiveTranscoder(currentTranscoder, roundNumber);
     transcoder.active = active;
-    store.set("Transcoder", currentTranscoder.toHex(), transcoder);
+    transcoder.save();
 
     // create a unique "reward" for each active transcoder on every
     // round. If a transcoder calls reward() for a given round, we store its
@@ -46,17 +43,14 @@ export function newRound(event: NewRound): void {
       reward.transcoder = currentTranscoder.toHex();
 
       // Apply store updates
-      store.set("Reward", rewardId, reward);
+      reward.save();
     }
 
     currentTranscoder = bondingManager.getNextTranscoderInPool(
       currentTranscoder
     );
 
-    transcoder = store.get(
-      "Transcoder",
-      currentTranscoder.toHex()
-    ) as Transcoder;
+    transcoder = new Transcoder(currentTranscoder.toHex());
   }
 
   // Create new round
@@ -67,5 +61,5 @@ export function newRound(event: NewRound): void {
   round.startBlock = roundsManager.currentRoundStartBlock();
 
   // Apply store updates
-  store.set("Round", roundNumber.toString(), round);
+  round.save();
 }
