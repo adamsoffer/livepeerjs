@@ -335,6 +335,105 @@ export class Reward extends Entity {
   }
 }
 
+export class Share extends Entity {
+  constructor(id: string) {
+    this.entries = new Array(0);
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Share entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Share entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Share", id.toString(), this);
+  }
+
+  static load(id: string): Share | null {
+    return store.get("Share", id) as Share | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get rewardTokens(): BigInt | null {
+    let value = this.get("rewardTokens");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set rewardTokens(value: BigInt | null) {
+    if (value === null) {
+      this.unset("rewardTokens");
+    } else {
+      this.set("rewardTokens", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get fees(): BigInt | null {
+    let value = this.get("fees");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set fees(value: BigInt | null) {
+    if (value === null) {
+      this.unset("fees");
+    } else {
+      this.set("fees", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get delegator(): string | null {
+    let value = this.get("delegator");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegator(value: string | null) {
+    if (value === null) {
+      this.unset("delegator");
+    } else {
+      this.set("delegator", Value.fromString(value as string));
+    }
+  }
+
+  get round(): string | null {
+    let value = this.get("round");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set round(value: string | null) {
+    if (value === null) {
+      this.unset("round");
+    } else {
+      this.set("round", Value.fromString(value as string));
+    }
+  }
+}
+
 export class Round extends Entity {
   constructor(id: string) {
     this.entries = new Array(0);
@@ -441,6 +540,26 @@ export class Round extends Entity {
       this.set("rewards", Value.fromStringArray(value as Array<string>));
     }
   }
+
+  get delegatorShares(): Array<string> | null {
+    let value = this.get("delegatorShares");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set delegatorShares(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("delegatorShares");
+    } else {
+      this.set(
+        "delegatorShares",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
 }
 
 export class Delegator extends Entity {
@@ -524,8 +643,8 @@ export class Delegator extends Entity {
     }
   }
 
-  get delegateAddress(): string | null {
-    let value = this.get("delegateAddress");
+  get delegate(): string | null {
+    let value = this.get("delegate");
     if (value === null) {
       return null;
     } else {
@@ -533,11 +652,11 @@ export class Delegator extends Entity {
     }
   }
 
-  set delegateAddress(value: string | null) {
+  set delegate(value: string | null) {
     if (value === null) {
-      this.unset("delegateAddress");
+      this.unset("delegate");
     } else {
-      this.set("delegateAddress", Value.fromString(value as string));
+      this.set("delegate", Value.fromString(value as string));
     }
   }
 
@@ -691,6 +810,23 @@ export class Delegator extends Entity {
       this.unset("nextUnbondingLockId");
     } else {
       this.set("nextUnbondingLockId", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get shares(): Array<string> | null {
+    let value = this.get("shares");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set shares(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("shares");
+    } else {
+      this.set("shares", Value.fromStringArray(value as Array<string>));
     }
   }
 }

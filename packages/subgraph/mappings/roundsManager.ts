@@ -19,7 +19,7 @@ export function newRound(event: NewRound): void {
     "0000000000000000000000000000000000000000"
   );
   let currentTranscoder = bondingManager.getFirstTranscoderInPool();
-  let transcoder = new Transcoder(currentTranscoder.toHex());
+  let transcoder = Transcoder.load(currentTranscoder.toHex());
   let active: boolean;
   let rewardId: string;
   let reward: Reward;
@@ -50,7 +50,7 @@ export function newRound(event: NewRound): void {
       currentTranscoder
     );
 
-    transcoder = new Transcoder(currentTranscoder.toHex());
+    transcoder = Transcoder.load(currentTranscoder.toHex());
   }
 
   // Create new round

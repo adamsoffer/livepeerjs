@@ -22,6 +22,14 @@ type Reward @entity {
   rewardTokens: BigInt
 }
 
+type Share @entity {
+  id: ID!
+  rewardTokens: BigInt
+  fees: BigInt
+  delegator: Delegator
+  round: Round
+}
+
 type Round @entity {
   id: ID!
   initialized: Boolean
@@ -29,6 +37,7 @@ type Round @entity {
   lastInitializedRound: BigInt
   startBlock: BigInt
   rewards: [Reward!] @derivedFrom(field: "round")
+  delegatorShares: [Share!] @derivedFrom(field: "round")
 }
 
 type Delegator @entity {
@@ -36,7 +45,7 @@ type Delegator @entity {
   allowance: BigInt
   bondedAmount: BigInt
   fees: BigInt
-  delegateAddress: Transcoder
+  delegate: Transcoder
   delegatedAmount: BigInt
   lastClaimRound: BigInt
   pendingFees: BigInt
@@ -46,6 +55,7 @@ type Delegator @entity {
   withdrawAmount: BigInt
   withdrawRound: BigInt
   nextUnbondingLockId: BigInt
+  shares: [Share!] @derivedFrom(field: "delegator")
 }
 
 enum DelegatorStatus @entity {
