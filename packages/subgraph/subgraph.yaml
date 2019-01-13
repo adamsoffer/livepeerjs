@@ -3,6 +3,21 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
+    name: Controller
+    source:
+      address: "f96d54e490317c557a967abfa5d6e33006be69b3"
+      abi: Controller
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      file: "./mappings/controller.ts"
+      entities: []
+      abis:
+        - name: Controller
+          file: ./abis/Controller.json
+      eventHandlers: []
+  - kind: ethereum/contract
     name: BondingManager_deprecated
     source:
       address: "511bc4556d823ae99630ae8de28b9b80df90ea2e"
@@ -11,12 +26,12 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.1
       language: wasm/assemblyscript
-      file: ./mappings/bondingManager.ts
+      file: ./mappings/bondingManager_deprecated.ts
       entities:
         - Transcoder
         - Reward
         - Delegator
-        - Earnings
+        - Share
       abis:
         - name: BondingManager
           file: ./abis/BondingManager_deprecated.json
@@ -39,12 +54,14 @@ dataSources:
         - Transcoder
         - Reward
         - Delegator
-        - Earnings
+        - Share
       abis:
         - name: BondingManager
           file: ./abis/BondingManager.json
         - name: RoundsManager
           file: ./abis/RoundsManager.json
+        - name: Controller
+          file: ./abis/Controller.json
       eventHandlers:
         - event: TranscoderUpdate(address,uint256,uint256,uint256,bool)
           handler: transcoderUpdated
