@@ -592,23 +592,6 @@ export class Delegator extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get allowance(): BigInt | null {
-    let value = this.get("allowance");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set allowance(value: BigInt | null) {
-    if (value === null) {
-      this.unset("allowance");
-    } else {
-      this.set("allowance", Value.fromBigInt(value as BigInt));
-    }
-  }
-
   get bondedAmount(): BigInt | null {
     let value = this.get("bondedAmount");
     if (value === null) {
@@ -660,40 +643,6 @@ export class Delegator extends Entity {
     }
   }
 
-  get delegatedAmount(): BigInt | null {
-    let value = this.get("delegatedAmount");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set delegatedAmount(value: BigInt | null) {
-    if (value === null) {
-      this.unset("delegatedAmount");
-    } else {
-      this.set("delegatedAmount", Value.fromBigInt(value as BigInt));
-    }
-  }
-
-  get lastClaimRound(): BigInt | null {
-    let value = this.get("lastClaimRound");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set lastClaimRound(value: BigInt | null) {
-    if (value === null) {
-      this.unset("lastClaimRound");
-    } else {
-      this.set("lastClaimRound", Value.fromBigInt(value as BigInt));
-    }
-  }
-
   get pendingFees(): BigInt | null {
     let value = this.get("pendingFees");
     if (value === null) {
@@ -725,91 +674,6 @@ export class Delegator extends Entity {
       this.unset("pendingStake");
     } else {
       this.set("pendingStake", Value.fromBigInt(value as BigInt));
-    }
-  }
-
-  get startRound(): BigInt | null {
-    let value = this.get("startRound");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set startRound(value: BigInt | null) {
-    if (value === null) {
-      this.unset("startRound");
-    } else {
-      this.set("startRound", Value.fromBigInt(value as BigInt));
-    }
-  }
-
-  get status(): string | null {
-    let value = this.get("status");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set status(value: string | null) {
-    if (value === null) {
-      this.unset("status");
-    } else {
-      this.set("status", Value.fromString(value as string));
-    }
-  }
-
-  get withdrawAmount(): BigInt | null {
-    let value = this.get("withdrawAmount");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set withdrawAmount(value: BigInt | null) {
-    if (value === null) {
-      this.unset("withdrawAmount");
-    } else {
-      this.set("withdrawAmount", Value.fromBigInt(value as BigInt));
-    }
-  }
-
-  get withdrawRound(): BigInt | null {
-    let value = this.get("withdrawRound");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set withdrawRound(value: BigInt | null) {
-    if (value === null) {
-      this.unset("withdrawRound");
-    } else {
-      this.set("withdrawRound", Value.fromBigInt(value as BigInt));
-    }
-  }
-
-  get nextUnbondingLockId(): BigInt | null {
-    let value = this.get("nextUnbondingLockId");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set nextUnbondingLockId(value: BigInt | null) {
-    if (value === null) {
-      this.unset("nextUnbondingLockId");
-    } else {
-      this.set("nextUnbondingLockId", Value.fromBigInt(value as BigInt));
     }
   }
 

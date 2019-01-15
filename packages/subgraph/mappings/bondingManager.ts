@@ -14,8 +14,8 @@ import {
   Rebond,
   Reward as RewardEvent // alias Reward event to avoid name collision with entity type
 } from "../types/BondingManager/BondingManager";
+import { Controller } from "../types/BondingManager/Controller";
 import { RoundsManager } from "../types/RoundsManager/RoundsManager";
-import { Controller } from "../types/Controller/Controller";
 
 // Import entity types generated from the GraphQL schema
 import { Transcoder, Reward, Delegator, Share } from "../types/schema";
@@ -29,6 +29,7 @@ let controller = Controller.bind(
   Address.fromString("f96d54e490317c557a967abfa5d6e33006be69b3")
 );
 
+// Deprecated target contracts
 const BondingManagerV1 = "0x81eb0b10ff8703905904e4d91cf6aa575d59736f";
 const BondingManagerV2 = "0x5a9512826eaaf1fe4190f89443314e95a515fe24";
 
@@ -123,13 +124,14 @@ export function bond(event: Bond): void {
   let oldDelegateAddress = event.params.oldDelegate;
   let bondedAmount = event.params.bondedAmount;
   let delegatorAddress = event.params.delegator;
-  let delegator = Delegator.load(delegatorAddress.toHex());
 
   // Create delegator if it does not yet exist
+  let delegator = Delegator.load(delegatorAddress.toHex());
   if (delegator == null) {
     delegator = new Delegator(delegatorAddress.toHex());
   }
 
+  // Create delegate if it does not yet exist
   let newDelegate = Transcoder.load(newDelegateAddress.toHex());
   if (newDelegate == null) {
     newDelegate = new Transcoder(newDelegateAddress.toHex());
@@ -141,9 +143,6 @@ export function bond(event: Bond): void {
       oldDelegateAddress.toHex() != "0x0000000000000000000000000000000000000000"
     ) {
       let oldDelegate = Transcoder.load(oldDelegateAddress.toHex());
-      if (oldDelegate == null) {
-        oldDelegate = new Transcoder(oldDelegateAddress.toHex());
-      }
       let oldDelegateTotalStake = bondingManager.transcoderTotalStake(
         oldDelegateAddress
       );
@@ -156,6 +155,10 @@ export function bond(event: Bond): void {
       );
 
       oldDelegate.save();
+    }
+
+    if (newDelegate.delegators == null) {
+      newDelegate.delegators = new Array<string>();
     }
 
     // Add delegator to new delegate
@@ -173,7 +176,6 @@ export function bond(event: Bond): void {
 
   // Update delegator
   delegator.bondedAmount = bondedAmount;
-  delegator.status = "Bonded";
   delegator.delegate = newDelegateAddress.toHex();
 
   // Apply store updates
@@ -204,7 +206,6 @@ export function unbond(event: Unbond): void {
       1
     );
     delegator.delegate = null;
-    delegator.status = "Unbonded";
   }
 
   // Apply store updates
@@ -224,7 +225,6 @@ export function rebond(event: Rebond): void {
 
   // Update delegator
   delegator.bondedAmount = delegator.bondedAmount.plus(amount);
-  delegator.status = "Bonded";
   delegator.delegate = delegateAddress.toHex();
 
   // Update transcoder
@@ -242,10 +242,6 @@ export function reward(event: RewardEvent): void {
   let transcoder = Transcoder.load(transcoderAddress.toHex());
   let totalStake = bondingManager.transcoderTotalStake(transcoderAddress);
   let currentRound = roundsManager.currentRound();
-
-  if (transcoder == null) {
-    transcoder = new Transcoder(transcoderAddress.toHex());
-  }
 
   // Recreate unique id from transcoder address and round
   // We use this to keep track of a transcoder's rewards for each round
@@ -272,78 +268,72 @@ export function reward(event: RewardEvent): void {
   let roundsSinceLastClaim: number;
   let lastClaimRound: BigInt;
 
-  //for (let i = 0; i < delegators.length; i++) {
-  delegatorAddress = Address.fromString(
-    "0x22b544d19ffe43c6083327271d9f39020da30c65"
-  );
-  delegator = Delegator.load(delegatorAddress.toHex()) as Delegator;
-  if (!delegator) {
-    delegator = new Delegator(delegatorAddress.toHex());
+  for (let i = 0; i < delegators.length; i++) {
+    delegatorAddress = Address.fromString(delegators[i]);
+    delegator = Delegator.load(delegators[i]) as Delegator;
+    delegatorData = bondingManager.getDelegator(delegatorAddress);
+
+    // Get target contract address
+    let targetContract = controller
+      .getContract(bondingManager.targetContractId())
+      .toHex();
+
+    // Check to see if target contract is deprecated
+    let isDeprecated =
+      targetContract == BondingManagerV1 || targetContract == BondingManagerV2;
+
+    // Account for getDelegator return signature change
+    lastClaimRound = isDeprecated ? delegatorData.value6 : delegatorData.value5;
+
+    // Get total rounds sincer delegators last claim
+    roundsSinceLastClaim = currentRound.toI32() - lastClaimRound.toI32();
+
+    // Create a new "Share" entry for delegator
+    share = new Share(delegatorAddress.toHex() + "-" + currentRound.toString());
+
+    // Calculate delegators reward tokens and fees for this round
+    if (roundsSinceLastClaim > 1) {
+      pendingStakeAsOfNow = bondingManager.pendingStake(
+        delegatorAddress,
+        currentRound
+      );
+      pendingFeesAsOfNow = bondingManager.pendingFees(
+        delegatorAddress,
+        currentRound
+      );
+      pendingStakeAsOfLastRound = bondingManager.pendingStake(
+        delegatorAddress,
+        currentRound.minus(BigInt.fromI32(1))
+      );
+      pendingFeesAsOfLastRound = bondingManager.pendingFees(
+        delegatorAddress,
+        currentRound.minus(BigInt.fromI32(1))
+      );
+      share.rewardTokens = pendingStakeAsOfNow.minus(pendingStakeAsOfLastRound);
+      share.fees = pendingFeesAsOfNow.minus(pendingFeesAsOfLastRound);
+    }
+
+    if (roundsSinceLastClaim == 1) {
+      pendingStakeAsOfNow = bondingManager.pendingStake(
+        delegatorAddress,
+        currentRound
+      );
+      pendingFeesAsOfNow = bondingManager.pendingFees(
+        delegatorAddress,
+        currentRound
+      );
+      share.rewardTokens = pendingStakeAsOfNow.minus(delegatorData.value0);
+      share.fees = pendingFeesAsOfNow.minus(delegatorData.value1);
+    }
+
+    share.round = currentRound.toString();
+    share.delegator = delegatorAddress.toHex();
+    share.save();
+
+    delegator.pendingStake = pendingStakeAsOfNow;
+    delegator.pendingFees = pendingFeesAsOfNow;
+    delegator.save();
   }
-
-  delegatorData = bondingManager.getDelegator(delegatorAddress);
-
-  // Get target contract address
-  let targetContract = controller
-    .getContract(bondingManager.targetContractId())
-    .toHex();
-
-  // Check to see if target contract is deprecated
-  let isDeprecated =
-    targetContract == BondingManagerV1 || targetContract == BondingManagerV2;
-
-  // Account for getDelegator return signature change
-  lastClaimRound = isDeprecated ? delegatorData.value6 : delegatorData.value5;
-
-  // Get total rounds sincer delegators last claim
-  roundsSinceLastClaim = currentRound.toI32() - lastClaimRound.toI32();
-
-  // Create a new "Share" entry for delegator
-  share = new Share(delegatorAddress.toHex() + "-" + currentRound.toString());
-
-  // Calculate delegators reward tokens and fees for this round
-  if (roundsSinceLastClaim > 1) {
-    pendingStakeAsOfNow = bondingManager.pendingStake(
-      delegatorAddress,
-      currentRound
-    );
-    pendingFeesAsOfNow = bondingManager.pendingFees(
-      delegatorAddress,
-      currentRound
-    );
-    pendingStakeAsOfLastRound = bondingManager.pendingStake(
-      delegatorAddress,
-      currentRound.minus(BigInt.fromI32(1))
-    );
-    pendingFeesAsOfLastRound = bondingManager.pendingFees(
-      delegatorAddress,
-      currentRound.minus(BigInt.fromI32(1))
-    );
-    share.rewardTokens = pendingStakeAsOfNow.minus(pendingStakeAsOfLastRound);
-    share.fees = pendingFeesAsOfNow.minus(pendingFeesAsOfLastRound);
-  }
-
-  if (roundsSinceLastClaim == 1) {
-    pendingStakeAsOfNow = bondingManager.pendingStake(
-      delegatorAddress,
-      currentRound
-    );
-    pendingFeesAsOfNow = bondingManager.pendingFees(
-      delegatorAddress,
-      currentRound
-    );
-    share.rewardTokens = pendingStakeAsOfNow.minus(delegatorData.value0);
-    share.fees = pendingFeesAsOfNow.minus(delegatorData.value1);
-  }
-
-  share.round = currentRound.toString();
-  share.delegator = delegatorAddress.toHex();
-  share.save();
-
-  delegator.pendingStake = pendingStakeAsOfNow;
-  delegator.pendingFees = pendingFeesAsOfNow;
-  delegator.save();
-  //}
 
   // Apply store updates
   transcoder.save();

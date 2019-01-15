@@ -1,5 +1,5 @@
 // Import types and APIs from graph-ts
-import { store, Address } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 
 // Import event types from the registrar contract ABIs
 import { RoundsManager, NewRound } from "../types/RoundsManager/RoundsManager";

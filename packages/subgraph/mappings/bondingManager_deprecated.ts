@@ -39,7 +39,6 @@ export function bond_deprecated(event: Bond_deprecated): void {
   delegate.totalStake = delegateTotalStake;
 
   // Update delegator
-  delegator.status = "Bonded";
   delegator.bondedAmount = bondedAmount;
   delegator.delegate = delegateAddress.toHex();
 
@@ -74,7 +73,6 @@ export function unbond_deprecated(event: Unbond_deprecated): void {
     1
   );
   delegator.delegate = null;
-  delegator.status = "Unbonded";
 
   // Apply store updates
   delegator.save();
