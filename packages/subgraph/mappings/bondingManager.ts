@@ -251,7 +251,6 @@ export function reward(event: RewardEvent): void {
   let transcoder = Transcoder.load(transcoderAddress.toHex());
   let totalStake = bondingManager.transcoderTotalStake(transcoderAddress);
   let currentRound = roundsManager.currentRound();
-
   // Recreate unique id from transcoder address and round
   // We use this to keep track of a transcoder's rewards for each round
   let rewardId = transcoderAddress.toHex() + "-" + currentRound.toString();
@@ -344,6 +343,7 @@ export function reward(event: RewardEvent): void {
       }
 
       share.round = currentRound.toString();
+      share.timestamp = event.block.timestamp;
       share.delegator = delegatorAddress.toHex();
       share.save();
 

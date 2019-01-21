@@ -365,6 +365,23 @@ export class Share extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get timestamp(): BigInt | null {
+    let value = this.get("timestamp");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get rewardTokens(): BigInt | null {
     let value = this.get("rewardTokens");
     if (value === null) {

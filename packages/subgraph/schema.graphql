@@ -24,6 +24,7 @@ type Reward @entity {
 
 type Share @entity {
   id: ID!
+  timestamp: BigInt
   rewardTokens: BigInt
   fees: BigInt
   delegator: Delegator
