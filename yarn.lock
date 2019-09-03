@@ -4752,6 +4752,30 @@
   dependencies:
     "@types/react" "*"
 
+"@types/styled-system@*":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.1.tgz#22eff9e4b2f89cd2222c15053f8c11be5ec9c357"
+  integrity sha512-RAF9Erif51vbD1ZbIiGN4ZrgxpSr44iMXrPjQK5+tI7PWLDugKepTWj7T/LqG5VfaYYIrEmOCzIpulhv+/D/XQ==
+  dependencies:
+    csstype "^2.6.4"
+
+"@types/styled-system__css@*":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@types/styled-system__css/-/styled-system__css-5.0.4.tgz#df83b015cf377ab39ecf33ea31339c05eeb9230a"
+  integrity sha512-SHHoNh9cCRTG9hcmCD2ua0NeYUrLmLXoMJ7g0U/e0FjrzcwNQtM5wjjEJVCVZymU632xA1PdPEykrtoSHTIecA==
+  dependencies:
+    csstype "^2.6.6"
+
+"@types/theme-ui@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@types/theme-ui/-/theme-ui-0.2.2.tgz#06c8e51bf231ce643f7ce859d6309d104e18a4d9"
+  integrity sha512-c6kGvo8GeLGw92nbH3jGCzJHmJQ838fwo4Pst7WoYkUwOar2fIDCW70DRdW+mFXrvA1l1jPUY0bwYwwjXFjhZA==
+  dependencies:
+    "@types/react" "*"
+    "@types/styled-system" "*"
+    "@types/styled-system__css" "*"
+    csstype "^2.6.6"
+
 "@types/underscore@*":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.9.2.tgz#2c4f7743287218f5c2d9a83db3806672aa48530d"
@@ -9943,7 +9967,7 @@ cssstyle@^1.0.0, cssstyle@^1.1.1, cssstyle@^1.2.2:
   dependencies:
     cssom "0.3.x"
 
-csstype@^2.2.0, csstype@^2.5.2, csstype@^2.5.7, csstype@^2.6.5:
+csstype@^2.2.0, csstype@^2.5.2, csstype@^2.5.7, csstype@^2.6.4, csstype@^2.6.5, csstype@^2.6.6:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.6.tgz#c34f8226a94bbb10c32cc0d714afdf942291fc41"
   integrity sha512-RpFbQGUE74iyPgvr46U9t1xoQBM8T4BL8SxrN66Le2xYAPSaDJJKeztV3awugusb3g3G9iL8StmkBBXhcbbXhg==
