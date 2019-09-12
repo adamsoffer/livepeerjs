@@ -10,6 +10,7 @@ package-lock.json
 **/*/dist
 **/*/bin
 **/*/build
+**/*/.next
 coverage
 .nyc_output
 yarn-error.log
@@ -19,4 +20,3 @@ yarn-error.log
 .idea
 .vscode
 .cache
-.next
