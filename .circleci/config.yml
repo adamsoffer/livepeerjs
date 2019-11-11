@@ -214,13 +214,13 @@ workflows:
             - build-test
           filters:
             branches:
-              only: master
+              only: test-circleci
       - deploy-apps-staging:
           requires:
             - build-apps-staging
           filters:
             branches:
-              only: master
+              only: test-circleci
 
       # Production workflow for the apps
       - build-apps-production:
