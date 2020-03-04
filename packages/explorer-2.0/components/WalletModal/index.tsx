@@ -222,15 +222,7 @@ export default () => {
           {walletView === WALLET_VIEWS.PENDING ? (
             <PendingView connector={pendingWallet} />
           ) : (
-            <Grid
-              columns={2}
-              gap={3}
-              sx={{
-                display: 'grid',
-                gridGap: 2,
-                gridTemplateColumns: `repeat(auto-fit, minmax(128px, 1fr))`,
-              }}
-            >
+            <Grid columns={2} gap={3}>
               {process.browser && getOptions()}
             </Grid>
           )}
