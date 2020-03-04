@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Box } from 'theme-ui'
+import { Box, Grid } from '@theme-ui/components'
 import CloseIcon from '../../public/img/close.svg'
 import MetaMaskIcon from '../../public/img/metamask.svg'
 import { Dialog } from '@reach/dialog'
@@ -222,7 +222,9 @@ export default () => {
           {walletView === WALLET_VIEWS.PENDING ? (
             <PendingView connector={pendingWallet} />
           ) : (
-            <Box
+            <Grid
+              columns={2}
+              gap={3}
               sx={{
                 display: 'grid',
                 gridGap: 2,
@@ -230,7 +232,7 @@ export default () => {
               }}
             >
               {process.browser && getOptions()}
-            </Box>
+            </Grid>
           )}
         </Box>
       </Box>
