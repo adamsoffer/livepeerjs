@@ -222,7 +222,7 @@ export default () => {
           {walletView === WALLET_VIEWS.PENDING ? (
             <PendingView connector={pendingWallet} />
           ) : (
-            <Grid columns={2} gap={3}>
+            <Grid columns={[1, 1, 1, 2]} gap={3}>
               {process.browser && getOptions()}
             </Grid>
           )}

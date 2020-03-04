@@ -31,6 +31,15 @@ export const SUPPORTED_WALLETS = {
     href: null,
     color: '#315CF5',
   },
+  COINBASE_LINK: {
+    name: 'Open in Coinbase Wallet',
+    icon: CoinbaseWalletIcon,
+    description: 'Open in Coinbase Wallet app.',
+    href: 'https://go.cb-w.com/0T8By93MA4',
+    color: '#315CF5',
+    mobile: true,
+    mobileOnly: true,
+  },
   FORTMATIC: {
     connector: Fortmatic,
     name: 'Fortmatic',
